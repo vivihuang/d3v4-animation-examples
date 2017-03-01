@@ -18,89 +18,51 @@ const responsivefy = (svg) => {
 }
 
 const margin = { top: 20, right: 20, bottom: 20, left: 20 }
-const width = 400 - margin.right - margin.left
-const height = 300 - margin.top - margin.bottom
-
-const xScale = d3.scaleBand()
-  .range([0, width])
-  .padding(0.2)
-const yScale = d3.scaleLinear()
-  .range([height, 0])
-
-const xAxis = d3.axisBottom(xScale)
-const yAxis = d3
-  .axisLeft(yScale)
-  .ticks(5)
+const width = 960 - margin.right - margin.left
+const height = 600 - margin.top - margin.bottom
 
 const svg = d3.select('.chart')
   .append('svg')
-  .attr('width', width + margin.right + margin.left)
-  .attr('height', height + margin.top + margin.bottom)
-  .call(responsivefy)
-  .append('g')
-  .attr('transform', `translate(${margin.left},${margin.top})`)
+    .attr('width', width + margin.right + margin.left)
+    .attr('height', height + margin.top + margin.bottom)
+    // .call(responsivefy)
 
-svg.append('g')
-  .attr('transform', `translate(0, ${height})`)
-  .attr('class', 'x axis')
+const path = d3.geoPath()
+  .projection(null)
 
-svg.append('g')
-  .attr('class', 'y axis')
+const color = d3.scaleLinear()
+  .domain([0, 50000])
+  .range(colorbrewer.Greens[7])
 
-const drawData = (data) => {
-  xScale.domain(data.map(d => d.letter))
-  yScale.domain([0, d3.max(data, d => d.frequency)])
+const drawMap = (us) => {
+  svg.append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`)
+    .attr('class', 'border nation')
+    .selectAll('path')
+    .data(topojson.feature(us, us.objects.nation).features)
+    .enter().append('path')
+      .attr('d', path)
 
-  svg.selectAll('.x.axis')
-    .transition()
-      .duration(300)
-    .call(xAxis)
+  svg.append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`)
+    .attr('class', 'border counties')
+    .selectAll('path')
+    .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append('path')
+      .attr('d', path)
+      .attr('class', 'county')
+      .style('fill', d => color(d.id))
 
-  svg.selectAll('.y.axis')
-    .transition()
-      .duration(300)
-    .call(yAxis)
-
-  const bars = svg.selectAll('.bar').data(data, d => d.letter)
-
-  bars
-    .exit()
-      .transition()
-        .duration(300)
-      .attr('y', yScale(0))
-      .attr('height', height - yScale(0))
-    .remove()
-
-  bars.enter()
-    .append('rect')
-    .attr('class', 'bar')
-    .attr('y', yScale(0))
-    .attr('height', height - yScale(0))
-
-  bars
-    .transition()
-      .duration(300)
-    .attr('x', d => xScale(d.letter))
-    .attr('y', d => yScale(d.frequency))
-    .attr('width', d => xScale.bandwidth())
-    .attr('height', d => height - yScale(d.frequency))
+  svg.append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`)
+    .attr('class', 'border states')
+    .append('path')
+      .attr("d", path(topojson.mesh(us, us.objects.states, (a, b) => a !== b)))
 }
 
-const replayData = (data) => {
-  const slices = []
-  for (let i = 0; i < data.length; i++) {
-    slices.push(data.slice(0, i+1))
+d3.json('us_10m.json', (error, us) => {
+  if (error) {
+    throw error
   }
-  slices.forEach((slice, index) => {
-    setTimeout(() => {
-      drawData(slice)
-    }, index * 300)
-  })
-}
-
-d3.tsv('data.tsv')
-  .row(d => ({
-    letter: d.letter,
-    frequency: d.frequency
-  }))
-  .get((error, data) => replayData(data))
+  drawMap(us)
+})
