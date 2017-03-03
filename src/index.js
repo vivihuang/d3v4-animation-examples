@@ -9,6 +9,7 @@ import { axisBottom } from 'd3-axis'
 // import { responsivefy } from './components/responsivefy'
 import { drawMultipleLineChart } from './components/lineChart'
 import { drawMultipleAreaChart } from './components/areaChart'
+import { drawStackedAreaChart } from './components/stackedAreaChart'
 
 import './styles.css'
 
@@ -32,9 +33,21 @@ const svg = select('.chart')
 const results = require('./stocks.csv')
 
 const parseTime = timeParse('%b %Y')
+
 let data = nest()
   .key(d => d.symbol)
   .entries(results)
+
+let stackedData = nest()
+  .key(d => d.date)
+  .entries(results)
+
+stackedData = stackedData.map(item => {
+  let values = {}
+  item.values.map(d => ({ [d.symbol]: d.price }))
+    .forEach(v => { Object.assign(values, v, { date: parseTime(item.key) }) })
+  return values
+})
 
 data.map(d => Object.assign(d, {
   values: d.values.map(v => ({
@@ -66,3 +79,4 @@ svg.append('g')
 
 drawMultipleLineChart(svg, xScale, yScale, color, width, height, data)
 drawMultipleAreaChart(svg, xScale, yScale, color, width, height, data)
+drawStackedAreaChart(svg, xScale, yScale, color, width, height, stackedData)
