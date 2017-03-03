@@ -69,8 +69,6 @@ queue()
       .attr('class', 'axis y')
       .call(axisLeft(yScale).ticks(5))
 
-    data = data.slice(0, 1)
-
     const symbols = svg.selectAll('.symbol')
       .data(data)
       .enter().append('g')
