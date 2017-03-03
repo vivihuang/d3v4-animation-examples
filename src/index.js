@@ -64,11 +64,5 @@ svg.append('g')
   .attr('class', 'axis x')
   .call(axisBottom(xScale).ticks(5))
 
-const symbols = svg.selectAll('.symbol')
-  .data(data)
-  .enter().append('g')
-  .attr('class', 'symbol')
-  .attr('transform', (d, i) => `translate(0, ${i * height / 4 + 10})`)
-
-drawMultipleLineChart(symbols, xScale, yScale, color, width)
+drawMultipleLineChart(svg, xScale, yScale, color, width, height, data)
 drawMultipleAreaChart(symbols, xScale, yScale, color)
