@@ -1,6 +1,5 @@
 import { line, curveCatmullRom } from 'd3-shape'
 import { timer } from 'd3-timer'
-import { axisLeft } from 'd3-axis'
 import { select } from 'd3-selection'
 
 const drawLineChart = (symbols, xScale, yScale) => {
@@ -26,9 +25,6 @@ export const drawMultipleLineChart = (symbols, xScale, yScale, color, width) => 
     const layer = select(this)
 
     yScale.domain([0, d.maxPrice])
-
-    layer.attr('class', 'axis y')
-      .call(axisLeft(yScale).ticks(5))
 
     layer.append('path')
       .attr('class', 'line')

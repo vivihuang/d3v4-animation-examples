@@ -5,7 +5,7 @@ import { nest } from 'd3-collection'
 import { timeParse } from 'd3-time-format'
 import { min, max, sum } from 'd3-array'
 import { scaleTime, scaleLinear, scaleOrdinal } from 'd3-scale'
-import { axisBottom, axisLeft } from 'd3-axis'
+import { axisBottom } from 'd3-axis'
 
 import { responsivefy } from './components/responsivefy'
 import { drawMultipleLineChart } from './components/lineChart'
@@ -64,10 +64,6 @@ queue()
       .attr('transform', `translate(0, ${height})`)
       .attr('class', 'axis x')
       .call(axisBottom(xScale).ticks(5))
-
-    svg.append('g')
-      .attr('class', 'axis y')
-      .call(axisLeft(yScale).ticks(5))
 
     const symbols = svg.selectAll('.symbol')
       .data(data)
