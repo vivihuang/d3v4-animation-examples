@@ -34,8 +34,6 @@ export const drawMultipleLineChart = (symbols, xScale, yScale, color, width) => 
 
     layer.append('path')
       .attr('class', 'line')
-      .style('fill', 'none')
-      .style('stroke', '#000')
 
     layer.append('circle')
       .attr('class', 'circle')
@@ -43,7 +41,6 @@ export const drawMultipleLineChart = (symbols, xScale, yScale, color, width) => 
       .attr('cx', width)
       .attr('cy', d => yScale(d.values[n - 1].price))
       .style('fill', d => color(d.key))
-      .style('stroke', '#000')
       .style('opacity', 0)
 
     const t = timer(() => {

@@ -9,6 +9,8 @@ import { axisBottom } from 'd3-axis'
 import { responsivefy } from './components/responsivefy'
 import { drawMultipleLineChart } from './components/lineChart'
 
+import './styles.css'
+
 const parseStringToFloat = string =>
 Math.round(parseFloat(string) * 100) / 100
 
