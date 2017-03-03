@@ -1,6 +1,7 @@
 import webpack from 'webpack'
 import path from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 export default ({
   cache: true,
@@ -31,7 +32,10 @@ export default ({
           header: true,
           skipEmptyLines: true
         }
-      }
+      }, {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
     ],
   },
 
@@ -52,6 +56,11 @@ export default ({
 
   plugins: [
     new webpack.ContextReplacementPlugin(/.*$/, /a^/),
+
+    new ExtractTextPlugin({
+      filename: '[name].[hash].css',
+      allChunks: true
+    }),
 
     new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor', 'manifest'],
