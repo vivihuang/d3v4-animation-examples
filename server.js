@@ -1,5 +1,7 @@
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
+import Dashboard from 'webpack-dashboard'
+import DashboardPlugin from 'webpack-dashboard/plugin'
 
 import config from './webpack.config.babel'
 
@@ -9,6 +11,9 @@ config.entry.app.unshift(
 
 const compiler = webpack(config)
 
+const dashboard = new Dashboard()
+compiler.apply(new DashboardPlugin(dashboard.setData))
+
 const server = new WebpackDevServer(compiler, {
   hot: true,
   quiet: true,
@@ -16,4 +21,3 @@ const server = new WebpackDevServer(compiler, {
 })
 
 server.listen(5000)
-console.log('Server is listening on port 5000~~~')
