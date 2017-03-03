@@ -3,7 +3,7 @@ import { select } from 'd3-selection'
 import { nest } from 'd3-collection'
 import { timeParse } from 'd3-time-format'
 import { min, max, sum } from 'd3-array'
-import { scaleTime, scaleLinear, scaleOrdinal } from 'd3-scale'
+import { scaleTime, scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale'
 import { axisBottom } from 'd3-axis'
 
 import { responsivefy } from './components/responsivefy'
@@ -14,11 +14,10 @@ import './styles.css'
 const parseStringToFloat = string =>
 Math.round(parseFloat(string) * 100) / 100
 
-const color = scaleOrdinal()
-  .range(['#c6dbef', '#9ecae1', '#6baed6']);
+const color = scaleOrdinal(schemeCategory10)
 
 const margin = { top: 20, right: 20, bottom: 20, left: 20 }
-const width = 480 - margin.right - margin.left
+const width = 400 - margin.right - margin.left
 const height = 300 - margin.top - margin.bottom
 
 const svg = select('.chart')
@@ -51,7 +50,7 @@ data.map(d => Object.assign(d, {
 data.sort((a, b) => b.maxPrice - a.maxPrice)
 
 const xScale = scaleTime()
-  .range([0, width - 10])
+  .range([0, width - 50])
   .domain([
     min(data, co => min(co.values, d => d.date)),
     max(data, co => max(co.values, d => d.date))

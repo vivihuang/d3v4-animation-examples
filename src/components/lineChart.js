@@ -19,6 +19,9 @@ const drawLineChart = (symbols, xScale, yScale, k) => {
     if (k === d.values.length) {
       layer.selectAll('.circle')
         .style('opacity', 1)
+
+      layer.selectAll('.legend')
+        .style('opacity', 1)
     }
   })
 }
@@ -38,9 +41,16 @@ export const drawMultipleLineChart = (symbols, xScale, yScale, color, width) => 
     layer.append('circle')
       .attr('class', 'circle')
       .attr('r', 5)
-      .attr('cx', width)
+      .attr('cx', width - 40)
       .attr('cy', d => yScale(d.values[n - 1].price))
       .style('fill', d => color(d.key))
+      .style('opacity', 0)
+
+    layer.append('text')
+      .text(d => d.key)
+      .attr('class', 'legend')
+      .attr('transform', d => `translate(${width - 30}, ${yScale(d.values[n - 1].price)})`)
+      .attr('dy', '0.3rem')
       .style('opacity', 0)
 
     const t = timer(() => {
