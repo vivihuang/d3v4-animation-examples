@@ -6,8 +6,9 @@ import { min, max, sum } from 'd3-array'
 import { scaleTime, scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale'
 import { axisBottom } from 'd3-axis'
 
-import { responsivefy } from './components/responsivefy'
+// import { responsivefy } from './components/responsivefy'
 import { drawMultipleLineChart } from './components/lineChart'
+import { drawMultipleAreaChart } from './components/areaChart'
 
 import './styles.css'
 
@@ -70,5 +71,4 @@ const symbols = svg.selectAll('.symbol')
   .attr('transform', (d, i) => `translate(0, ${i * height / 4 + 10})`)
 
 drawMultipleLineChart(symbols, xScale, yScale, color, width)
-
-symbols.exit().remove()
+drawMultipleAreaChart(symbols, xScale, yScale, color)
