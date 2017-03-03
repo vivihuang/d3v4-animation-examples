@@ -7,3 +7,7 @@
 .circle {
     stroke: #000;
 }
+
+.area {
+    stroke: none;
+}
