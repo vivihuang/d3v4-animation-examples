@@ -65,4 +65,4 @@ svg.append('g')
   .call(axisBottom(xScale).ticks(5))
 
 drawMultipleLineChart(svg, xScale, yScale, color, width, height, data)
-drawMultipleAreaChart(symbols, xScale, yScale, color)
+drawMultipleAreaChart(svg, xScale, yScale, color, width, height, data)

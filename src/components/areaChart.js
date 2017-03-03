@@ -1,7 +1,13 @@
 import { area, curveCatmullRom } from 'd3-shape'
 import { select } from 'd3-selection'
 
-export const drawMultipleAreaChart = (symbols, xScale, yScale, color) => {
+export const drawMultipleAreaChart = (svg, xScale, yScale, color, width, height, data) => {
+  const symbols = svg.selectAll('.symbol')
+    .data(data)
+    .enter().append('g')
+    .attr('class', 'symbol')
+    .attr('transform', (d, i) => `translate(0, ${i * height / 4 + 10})`)
+
   symbols.each(function(d) {
     const currentArea = area()
       .x(d => xScale(d.date))
