@@ -10,7 +10,7 @@ const easeTransition = (delayTime = 500, durationTime = 1000) => {
     .ease(easeSinInOut)
 }
 
-const hideAllShapes = (layer, xScale, yScale, data) => {
+const hideAllShapes = (layer, xScale, yScale, width, data) => {
   const currentLine = line()
     .x(d => xScale(d.date))
     .y(d => yScale(d.price))
@@ -21,12 +21,15 @@ const hideAllShapes = (layer, xScale, yScale, data) => {
   layer.selectAll('.circle')
     .style('opacity', 0)
     .remove()
+
   layer.selectAll('.legend')
-    .style('opacity', 0)
-    .remove()
+    .transition(easeTransition(200, 1000))
+    .attr('transform', `translate(${width - 30}, ${yScale(0)})`)
+    .attr('dy', '0')
+
   layer.selectAll('.line')
     .transition(easeTransition(200, 1000))
-    .attr("d", currentLine(data.values))
+    .attr('d', currentLine(data.values))
 }
 
 export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height, data) => {
@@ -50,35 +53,35 @@ export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height,
 
     layer.append('path')
       .attr('class', 'line')
-      .attr('d', d => currentLine(d.values))
+      .attr('d', currentLine(d.values))
 
     yScale.domain([0, d.maxPrice])
 
     layer.selectAll('.line')
       .transition(easeTransition())
-      .attr('d', d => currentLine(d.values))
+      .attr('d', currentLine(d.values))
 
     layer.append('circle')
       .attr('class', 'circle')
       .attr('r', 5)
       .attr('cx', width - 40)
-      .attr('cy', d => yScale(d.values[n - 1].price))
-      .style('fill', d => color(d.key))
+      .attr('cy', yScale(d.values[n - 1].price))
+      .style('fill', color(d.key))
       .style('opacity', 0)
       .transition(easeTransition(1500, 500))
         .style('opacity', 1)
 
     layer.append('text')
-      .text(d => d.key)
+      .text(d.key)
       .attr('class', 'legend')
-      .attr('transform', d => `translate(${width - 30}, ${yScale(d.values[n - 1].price)})`)
+      .attr('transform', `translate(${width - 30}, ${yScale(d.values[n - 1].price)})`)
       .attr('dy', '0.3rem')
       .style('opacity', 0)
       .transition(easeTransition(1500, 500))
         .style('opacity', 1)
 
     window.setTimeout(() => {
-      hideAllShapes(layer, xScale, yScale, d)
+      hideAllShapes(layer, xScale, yScale, width, d)
     }, 2500)
   })
 }

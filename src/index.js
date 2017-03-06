@@ -4,7 +4,6 @@ import { nest } from 'd3-collection'
 import { timeParse } from 'd3-time-format'
 import { min, max, sum } from 'd3-array'
 import { scaleTime, scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale'
-import { axisBottom } from 'd3-axis'
 
 // import { responsivefy } from './components/responsivefy'
 import { drawMultipleLineChart } from './components/lineChart'
@@ -20,7 +19,7 @@ const color = scaleOrdinal(schemeCategory10)
 
 const margin = { top: 20, right: 20, bottom: 20, left: 20 }
 const width = 400 - margin.right - margin.left
-const height = 300 - margin.top - margin.bottom
+const height = 320 - margin.top - margin.bottom
 
 const svg = select('.chart')
   .append('svg')
@@ -72,11 +71,8 @@ const xScale = scaleTime()
 
 const yScale = scaleLinear().range([height / 4 - 20, 0])
 
-svg.append('g')
-  .attr('transform', `translate(0, ${height})`)
-  .attr('class', 'axis x')
-  .call(axisBottom(xScale).ticks(5))
-
 drawMultipleLineChart(svg, xScale, yScale, color, width, height, data)
-drawMultipleAreaChart(svg, xScale, yScale, color, width, height, data)
-drawStackedAreaChart(svg, xScale, yScale, color, width, height, stackedData)
+window.setTimeout(() => {
+  drawMultipleAreaChart(svg, xScale, yScale, color, width, height)
+}, 4000)
+// drawStackedAreaChart(svg, xScale, yScale, color, width, height, stackedData)
