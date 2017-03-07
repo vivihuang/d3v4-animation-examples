@@ -47,15 +47,15 @@ const drawLineChart = (symbols, xScale, yScale, k) => {
     layer.selectAll('.line')
       .attr('d', d => currentLine(d.values.slice(0, k)))
 
-    if (k === d.values.length) {
-      layer.selectAll('.circle')
-        .transition(easeTransition(0))
-        .style('opacity', 1)
+    const positionX = xScale(d.values[k - 1].date) + 10
+    const positionY = yScale(d.values[k - 1].price)
 
-      layer.selectAll('.legend')
-        .transition(easeTransition(0))
-        .style('opacity', 1)
-    }
+    layer.selectAll('.circle')
+      .attr('cx', positionX)
+      .attr('cy', positionY)
+
+    layer.selectAll('.legend')
+      .attr('transform', `translate(${positionX + 10}, ${positionY})`)
   })
 }
 
@@ -82,17 +82,12 @@ export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height,
     layer.append('circle')
       .attr('class', 'circle')
       .attr('r', 5)
-      .attr('cx', width - 40)
-      .attr('cy', yScale(d.values[n - 1].price))
       .style('fill', color(d.key))
-      .style('opacity', 0)
 
     layer.append('text')
       .text(d.key)
       .attr('class', 'legend')
-      .attr('transform', `translate(${width - 30}, ${yScale(d.values[n - 1].price)})`)
       .attr('dy', '0.3rem')
-      .style('opacity', 0)
 
     let k = 1
 
