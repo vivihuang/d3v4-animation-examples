@@ -32,8 +32,8 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
 const color = scaleOrdinal(schemeCategory10)
 
 const margin = { top: 20, right: 20, bottom: 20, left: 20 }
-const width = 600 - margin.right - margin.left
-const height = 400 - margin.top - margin.bottom
+const width = 1000 - margin.right - margin.left
+const height = 500 - margin.top - margin.bottom
 
 const results = require('./stocks.csv')
 
@@ -134,7 +134,7 @@ window.setTimeout(() => {
 }, 2500)
 window.setTimeout(() => {
   showReferenceLine()
-  drawStackedAreaChart(symbols, xScale, yScale, color, height, data, stackedData)
+  drawStackedAreaChart(symbols, xScale, yScale, height, data, stackedData)
 }, 3000)
 window.setTimeout(() => {
   hideReferenceLine()
@@ -156,8 +156,10 @@ window.setTimeout(() => {
   xScale = scaleBand()
     .domain(data[0].values.map(d => d.date))
     .range([0, width - 50])
-    .paddingInner(0.8)
-    .paddingOuter(0.5)
+    .paddingInner(0.1)
+  const x1Scale = scaleBand()
+    .domain(data.map(d => d.key))
+    .range([0, xScale.bandwidth()])
   yScale.range([height, 0]).domain([0, max(data, d => d.maxPrice)])
-  drawGroupedBarChart(symbols, xScale, yScale, color, width, height)
+  drawGroupedBarChart(symbols, xScale, x1Scale, yScale, color, width, height)
 }, 5500)

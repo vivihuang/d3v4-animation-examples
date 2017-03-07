@@ -11,7 +11,7 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawStackedAreaChart = (symbols, xScale, yScale, color, height, originData, entryData) => {
+export const drawStackedAreaChart = (symbols, xScale, yScale, height, originData, entryData) => {
   const keys = originData.map(d => d.key)
 
   const currentStack = stack()

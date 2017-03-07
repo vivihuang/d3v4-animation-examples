@@ -9,17 +9,18 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawGroupedBarChart = (symbols, xScale, yScale, color, width, height) => {
-  symbols.each(function(d, i) {
+export const drawGroupedBarChart = (symbols, xScale, x1Scale, yScale, color, width, height) => {
+
+  symbols.each(function(d) {
     const layer = select(this)
 
-    layer.selectAll('rect')
+    layer.selectAll('.bar')
       .data(d.values)
       .enter().append('rect')
       .attr('class', 'bar')
-      .attr('x', v => xScale(v.date) + xScale.bandwidth() * (i - 2))
+      .attr('x', v => xScale(v.date) + x1Scale(d.key))
       .attr('y', v => yScale(v.price))
-      .attr('width', xScale.bandwidth())
+      .attr('width', x1Scale.bandwidth())
       .attr('height', v => height - yScale(v.price))
       .style('fill', color(d.key))
       .style('opacity', 0)
