@@ -15,7 +15,7 @@ import { drawStackedAreaChart } from './components/stackedAreaChart'
 import { drawStreamGraphChart } from './components/streamGraphChart'
 import { drawOverlappingAreaChart } from './components/overlappingAreaChart'
 import { drawGroupedBarChart } from './components/groupedBarChart'
-import { drawBarChart } from './components/stackedBarChart'
+import { drawStackedBarChart } from './components/stackedBarChart'
 
 import './styles.css'
 
@@ -163,3 +163,13 @@ window.setTimeout(() => {
   yScale.range([height, 0]).domain([0, max(data, d => d.maxPrice)])
   drawGroupedBarChart(symbols, xScale, x1Scale, yScale, color, width, height)
 }, 5500)
+window.setTimeout(() => {
+  xScale = scaleBand()
+    .domain(data[0].values.map(d => d.date))
+    .range([0, width - 50])
+    .paddingInner(0.1)
+  const x1Scale = scaleBand()
+    .domain(data.map(d => d.key))
+    .range([0, xScale.bandwidth()])
+  drawStackedBarChart(symbols, xScale, x1Scale, yScale, color, width, height, data, stackedData)
+}, 6000)
