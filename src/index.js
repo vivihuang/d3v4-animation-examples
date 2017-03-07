@@ -5,7 +5,7 @@ import { timeParse } from 'd3-time-format'
 import { min, max, sum } from 'd3-array'
 import { scaleTime, scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale'
 
-// import { responsivefy } from './components/responsivefy'
+import { responsivefy } from './components/responsivefy'
 import { drawMultipleLineChart } from './components/lineChart'
 import { drawMultipleAreaChart } from './components/areaChart'
 import { drawStackedAreaChart } from './components/stackedAreaChart'
@@ -18,8 +18,8 @@ Math.round(parseFloat(string) * 100) / 100
 const color = scaleOrdinal(schemeCategory10)
 
 const margin = { top: 20, right: 20, bottom: 20, left: 20 }
-const width = 400 - margin.right - margin.left
-const height = 320 - margin.top - margin.bottom
+const width = 600 - margin.right - margin.left
+const height = 400 - margin.top - margin.bottom
 
 const svg = select('.chart')
   .append('svg')
@@ -73,8 +73,8 @@ const yScale = scaleLinear().range([height / 4 - 20, 0])
 
 drawMultipleLineChart(svg, xScale, yScale, color, width, height, data)
 window.setTimeout(() => {
-  drawMultipleAreaChart(svg, xScale, yScale, color, width, height)
-}, 4000)
+  drawMultipleAreaChart(svg, xScale, yScale, color)
+}, 2000)
 window.setTimeout(() => {
   drawStackedAreaChart(svg, xScale, yScale, color, width, height, stackedData)
-}, 5000)
+}, 2500)

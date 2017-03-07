@@ -3,14 +3,14 @@ import { select } from 'd3-selection'
 import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
 
-const easeTransition = (delayTime = 500, durationTime = 1000) => {
+const easeTransition = (delayTime = 200, durationTime = 500) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)
     .ease(easeSinInOut)
 }
 
-export const drawMultipleAreaChart = (svg, xScale, yScale, color, width, height) => {
+export const drawMultipleAreaChart = (svg, xScale, yScale, color) => {
   const symbols = svg.selectAll('.symbol')
 
   symbols.each(function(d) {
@@ -33,7 +33,7 @@ export const drawMultipleAreaChart = (svg, xScale, yScale, color, width, height)
     currentArea.y1(d => yScale(d.price))
 
     layer.selectAll('.area')
-      .transition(easeTransition(0, 1000))
+      .transition(easeTransition(0))
       .attr('d', currentArea(d.values))
   })
 }

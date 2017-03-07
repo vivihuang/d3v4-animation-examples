@@ -3,7 +3,7 @@ import { select } from 'd3-selection'
 import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
 
-const easeTransition = (delayTime = 500, durationTime = 1000) => {
+const easeTransition = (delayTime = 200, durationTime = 500) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)
@@ -23,12 +23,12 @@ const hideAllShapes = (layer, xScale, yScale, width, data) => {
     .remove()
 
   layer.selectAll('.legend')
-    .transition(easeTransition(200, 1000))
+    .transition(easeTransition(0))
     .attr('transform', `translate(${width - 30}, ${yScale(0)})`)
     .attr('dy', '0')
 
   layer.selectAll('.line')
-    .transition(easeTransition(200, 1000))
+    .transition(easeTransition(0))
     .attr('d', currentLine(data.values))
 }
 
@@ -71,7 +71,7 @@ export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height,
       .attr('cy', yScale(d.values[n - 1].price))
       .style('fill', color(d.key))
       .style('opacity', 0)
-      .transition(easeTransition(1500, 500))
+      .transition(easeTransition(700))
         .style('opacity', 1)
 
     layer.append('text')
@@ -80,11 +80,11 @@ export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height,
       .attr('transform', `translate(${width - 30}, ${yScale(d.values[n - 1].price)})`)
       .attr('dy', '0.3rem')
       .style('opacity', 0)
-      .transition(easeTransition(1500, 500))
+      .transition(easeTransition(700))
         .style('opacity', 1)
 
     window.setTimeout(() => {
       hideAllShapes(layer, xScale, yScale, width, d)
-    }, 2500)
+    }, 1200)
   })
 }
