@@ -10,6 +10,7 @@ import { drawMultipleLineChart } from './components/lineChart'
 import { drawMultipleAreaChart } from './components/areaChart'
 import { drawStackedAreaChart } from './components/stackedAreaChart'
 import { drawStreamGraphChart } from './components/streamGraphChart'
+import { drawOverlappingAreaChart } from './components/overlappingAreaChart'
 
 import './styles.css'
 
@@ -82,3 +83,6 @@ window.setTimeout(() => {
 window.setTimeout(() => {
   drawStreamGraphChart(svg, xScale, yScale, color, width, height, stackedData)
 }, 4000)
+window.setTimeout(() => {
+  drawOverlappingAreaChart(svg, xScale, yScale, color, width, height, data)
+}, 5000)
