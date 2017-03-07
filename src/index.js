@@ -97,6 +97,23 @@ const symbols = svg.selectAll('.symbol')
   .attr('class', 'symbol')
   .attr('transform', (d, i) => `translate(0, ${i * height / 4 + 10})`)
 
+symbols.each(function (d) {
+  const layer = select(this)
+
+  layer.append('path')
+    .attr('class', 'area')
+
+  layer.append('path')
+    .attr('class', 'bar')
+
+  layer.append('path')
+    .attr('class', 'line')
+
+  layer.append('text')
+    .text(d.key)
+    .attr('class', 'legend')
+})
+
 svg.append('path')
   .attr('class', 'reference line')
   .attr('d', currentLine(data[0].values))

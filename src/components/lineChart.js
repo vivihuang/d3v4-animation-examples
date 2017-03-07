@@ -56,6 +56,7 @@ const drawLineChart = (symbols, xScale, yScale, k) => {
 
     layer.selectAll('.legend')
       .attr('transform', `translate(${positionX + 10}, ${positionY})`)
+      .attr('dy', '0.3rem')
   })
 }
 
@@ -77,11 +78,6 @@ export const drawMultipleLineChart = (symbols, xScale, yScale, color, width, hei
       .attr('class', 'circle')
       .attr('r', 5)
       .style('fill', color(d.key))
-
-    layer.append('text')
-      .text(d.key)
-      .attr('class', 'legend')
-      .attr('dy', '0.3rem')
 
     let k = 1
 
