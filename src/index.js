@@ -9,6 +9,7 @@ import { responsivefy } from './components/responsivefy'
 import { drawMultipleLineChart } from './components/lineChart'
 import { drawMultipleAreaChart } from './components/areaChart'
 import { drawStackedAreaChart } from './components/stackedAreaChart'
+import { drawStreamGraphChart } from './components/streamGraphChart'
 
 import './styles.css'
 
@@ -74,7 +75,10 @@ const yScale = scaleLinear().range([height / 4 - 20, 0])
 drawMultipleLineChart(svg, xScale, yScale, color, width, height, data)
 window.setTimeout(() => {
   drawMultipleAreaChart(svg, xScale, yScale, color)
-}, 2000)
+}, 2500)
 window.setTimeout(() => {
   drawStackedAreaChart(svg, xScale, yScale, color, width, height, stackedData)
-}, 2500)
+}, 3000)
+window.setTimeout(() => {
+  drawStreamGraphChart(svg, xScale, yScale, color, width, height, stackedData)
+}, 4000)

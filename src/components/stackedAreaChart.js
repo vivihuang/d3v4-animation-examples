@@ -1,4 +1,4 @@
-import { stack, area, curveCatmullRom, line } from 'd3-shape'
+import { stack, area, curveCatmullRom, line, stackOrderReverse } from 'd3-shape'
 import { select } from 'd3-selection'
 import { max } from 'd3-array'
 import { transition } from 'd3-transition'
@@ -17,6 +17,7 @@ export const drawStackedAreaChart = (svg, xScale, yScale, color, width, height, 
 
   const currentStack = stack()
     .keys(keys)
+    .order(stackOrderReverse)
 
   const stackedData = currentStack(entryData)
 
@@ -35,7 +36,7 @@ export const drawStackedAreaChart = (svg, xScale, yScale, color, width, height, 
     .curve(curveCatmullRom.alpha(0.5))
 
   const symbols = svg.selectAll('.symbol')
-    .data(stackedData.reverse())
+    .data(stackedData)
 
   symbols.each(function(d, i) {
     const layer = select(this)
