@@ -52,6 +52,9 @@ export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height,
     yScale.domain([0, 0])
 
     layer.append('path')
+      .attr('class', 'area')
+
+    layer.append('path')
       .attr('class', 'line')
       .attr('d', currentLine(d.values))
 

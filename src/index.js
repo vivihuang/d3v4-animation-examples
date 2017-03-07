@@ -60,7 +60,7 @@ data.map(d => Object.assign(d, {
   sumPrice: sum(d.values, v => v.price),
 }))
 
-data.sort((a, b) => b.maxPrice - a.maxPrice)
+data.sort((a, b) => a.key.toLowerCase() < b.key.toLowerCase())
 
 const xScale = scaleTime()
   .range([0, width - 50])
@@ -75,4 +75,6 @@ drawMultipleLineChart(svg, xScale, yScale, color, width, height, data)
 window.setTimeout(() => {
   drawMultipleAreaChart(svg, xScale, yScale, color, width, height)
 }, 4000)
-// drawStackedAreaChart(svg, xScale, yScale, color, width, height, stackedData)
+window.setTimeout(() => {
+  drawStackedAreaChart(svg, xScale, yScale, color, width, height, stackedData)
+}, 5000)

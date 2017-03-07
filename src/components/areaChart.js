@@ -20,13 +20,11 @@ export const drawMultipleAreaChart = (svg, xScale, yScale, color, width, height)
       .y1(d => yScale(d.price))
       .curve(curveCatmullRom.alpha(0.5))
 
-    yScale.range([height / 4 - 21, 0])
-      .domain([0, 0])
+    yScale.domain([0, 0])
 
     const layer = select(this)
 
-    layer.append('path')
-      .attr('class', 'area')
+    layer.selectAll('.area')
       .attr('d', currentArea(d.values))
       .style('fill', color(d.key))
 
