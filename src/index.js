@@ -4,6 +4,9 @@ import { nest } from 'd3-collection'
 import { timeParse } from 'd3-time-format'
 import { min, max, sum } from 'd3-array'
 import { scaleTime, scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale'
+import { line, curveCatmullRom } from 'd3-shape'
+import { transition } from 'd3-transition'
+import { easeSinInOut } from 'd3-ease'
 
 import { responsivefy } from './components/responsivefy'
 import { drawMultipleLineChart } from './components/lineChart'
@@ -16,6 +19,13 @@ import './styles.css'
 
 const parseStringToFloat = string =>
 Math.round(parseFloat(string) * 100) / 100
+
+const easeTransition = (delayTime = 200, durationTime = 500) => {
+  return transition()
+    .delay(delayTime)
+    .duration(durationTime)
+    .ease(easeSinInOut)
+}
 
 const color = scaleOrdinal(schemeCategory10)
 
@@ -63,7 +73,15 @@ const xScale = scaleTime()
     max(data, co => max(co.values, d => d.date))
   ])
 
-const yScale = scaleLinear().range([height / 4 - 20, 0])
+const yScale = scaleLinear().range([height, 0]).domain([0, 0])
+
+const currentLine = line()
+  .x(d => {
+    console.log(d)
+    return xScale(d.date)
+  })
+  .y(height)
+  .curve(curveCatmullRom.alpha(0.5))
 
 const svg = select('.chart')
   .append('svg')
@@ -79,17 +97,37 @@ const symbols = svg.selectAll('.symbol')
   .attr('class', 'symbol')
   .attr('transform', (d, i) => `translate(0, ${i * height / 4 + 10})`)
 
+svg.append('path')
+  .attr('class', 'reference line')
+  .attr('d', currentLine(data[0].values))
+  .style('opacity', 0)
+
+yScale.range([height / 4 - 20, 0])
+
+const showReferenceLine = () => {
+  svg.selectAll('.reference')
+    .transition(easeTransition())
+    .style('opacity', 1)
+}
+
+const hideReferenceLine = () => {
+  svg.selectAll('.reference')
+    .style('opacity', 0)
+}
 
 drawMultipleLineChart(symbols, xScale, yScale, color, width, height, data)
 window.setTimeout(() => {
   drawMultipleAreaChart(symbols, xScale, yScale, color)
 }, 2500)
 window.setTimeout(() => {
+  showReferenceLine()
   drawStackedAreaChart(symbols, xScale, yScale, color, width, height, data, stackedData)
 }, 3000)
 window.setTimeout(() => {
+  hideReferenceLine()
   drawStreamGraphChart(symbols, xScale, yScale, color, width, height, data, stackedData)
 }, 4000)
 window.setTimeout(() => {
+  showReferenceLine()
   drawOverlappingAreaChart(symbols, xScale, yScale, color, width, height, data)
 }, 5000)
