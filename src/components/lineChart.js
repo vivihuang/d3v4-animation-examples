@@ -2,6 +2,7 @@ import { line, curveCatmullRom } from 'd3-shape'
 import { select } from 'd3-selection'
 import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
+import { timer } from 'd3-timer'
 
 const easeTransition = (delayTime = 200, durationTime = 500) => {
   return transition()
@@ -32,12 +33,33 @@ const hideAllShapes = (layer, xScale, yScale, width, data) => {
     .attr('d', currentLine(data.values))
 }
 
-export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height, data) => {
+const drawLineChart = (symbols, xScale, yScale, k) => {
   const currentLine = line()
     .x(d => xScale(d.date))
     .y(d => yScale(d.price))
     .curve(curveCatmullRom.alpha(0.5))
 
+  symbols.each(function (d) {
+    const layer = select(this)
+
+    yScale.domain([0, d.maxPrice])
+
+    layer.selectAll('.line')
+      .attr('d', d => currentLine(d.values.slice(0, k)))
+
+    if (k === d.values.length) {
+      layer.selectAll('.circle')
+        .transition(easeTransition(0))
+        .style('opacity', 1)
+
+      layer.selectAll('.legend')
+        .transition(easeTransition(0))
+        .style('opacity', 1)
+    }
+  })
+}
+
+export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height, data) => {
   const symbols = svg.selectAll('.symbol')
     .data(data)
     .enter().append('g')
@@ -49,20 +71,13 @@ export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height,
 
     const n = d.values.length
 
-    yScale.domain([0, 0])
+    yScale.domain([0, d.maxPrice])
 
     layer.append('path')
       .attr('class', 'area')
 
     layer.append('path')
       .attr('class', 'line')
-      .attr('d', currentLine(d.values))
-
-    yScale.domain([0, d.maxPrice])
-
-    layer.selectAll('.line')
-      .transition(easeTransition())
-      .attr('d', currentLine(d.values))
 
     layer.append('circle')
       .attr('class', 'circle')
@@ -71,8 +86,6 @@ export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height,
       .attr('cy', yScale(d.values[n - 1].price))
       .style('fill', color(d.key))
       .style('opacity', 0)
-      .transition(easeTransition(700))
-        .style('opacity', 1)
 
     layer.append('text')
       .text(d.key)
@@ -80,11 +93,18 @@ export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height,
       .attr('transform', `translate(${width - 30}, ${yScale(d.values[n - 1].price)})`)
       .attr('dy', '0.3rem')
       .style('opacity', 0)
-      .transition(easeTransition(700))
-        .style('opacity', 1)
 
-    window.setTimeout(() => {
-      hideAllShapes(layer, xScale, yScale, width, d)
-    }, 1200)
+    let k = 1
+
+    const t = timer(() => {
+      drawLineChart(symbols, xScale, yScale, k)
+      if ((k += 2) >= n) {
+        drawLineChart(symbols, xScale, yScale, n)
+        window.setTimeout(() => {
+          hideAllShapes(layer, xScale, yScale, width, d)
+        }, 500)
+        t.stop()
+      }
+    })
   })
 }
