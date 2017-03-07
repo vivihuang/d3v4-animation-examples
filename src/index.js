@@ -23,14 +23,6 @@ const margin = { top: 20, right: 20, bottom: 20, left: 20 }
 const width = 600 - margin.right - margin.left
 const height = 400 - margin.top - margin.bottom
 
-const svg = select('.chart')
-  .append('svg')
-  .attr('width', width + margin.right + margin.left)
-  .attr('height', height + margin.top + margin.bottom)
-  // .call(responsivefy)
-  .append('g')
-  .attr('transform', `translate(${margin.left}, ${margin.top})`)
-
 const results = require('./stocks.csv')
 
 const parseTime = timeParse('%b %Y')
@@ -73,16 +65,31 @@ const xScale = scaleTime()
 
 const yScale = scaleLinear().range([height / 4 - 20, 0])
 
-drawMultipleLineChart(svg, xScale, yScale, color, width, height, data)
+const svg = select('.chart')
+  .append('svg')
+  .attr('width', width + margin.right + margin.left)
+  .attr('height', height + margin.top + margin.bottom)
+  // .call(responsivefy)
+  .append('g')
+  .attr('transform', `translate(${margin.left}, ${margin.top})`)
+
+const symbols = svg.selectAll('.symbol')
+  .data(data)
+  .enter().append('g')
+  .attr('class', 'symbol')
+  .attr('transform', (d, i) => `translate(0, ${i * height / 4 + 10})`)
+
+
+drawMultipleLineChart(symbols, xScale, yScale, color, width, height, data)
 window.setTimeout(() => {
-  drawMultipleAreaChart(svg, xScale, yScale, color)
+  drawMultipleAreaChart(symbols, xScale, yScale, color)
 }, 2500)
 window.setTimeout(() => {
-  drawStackedAreaChart(svg, xScale, yScale, color, width, height, data, stackedData)
+  drawStackedAreaChart(symbols, xScale, yScale, color, width, height, data, stackedData)
 }, 3000)
 window.setTimeout(() => {
-  drawStreamGraphChart(svg, xScale, yScale, color, width, height, data, stackedData)
+  drawStreamGraphChart(symbols, xScale, yScale, color, width, height, data, stackedData)
 }, 4000)
 window.setTimeout(() => {
-  drawOverlappingAreaChart(svg, xScale, yScale, color, width, height, data)
+  drawOverlappingAreaChart(symbols, xScale, yScale, color, width, height, data)
 }, 5000)

@@ -59,13 +59,7 @@ const drawLineChart = (symbols, xScale, yScale, k) => {
   })
 }
 
-export const drawMultipleLineChart = (svg, xScale, yScale, color, width, height, data) => {
-  const symbols = svg.selectAll('.symbol')
-    .data(data)
-    .enter().append('g')
-    .attr('class', 'symbol')
-    .attr('transform', (d, i) => `translate(0, ${i * height / 4 + 10})`)
-
+export const drawMultipleLineChart = (symbols, xScale, yScale, color, width, height, data) => {
   symbols.each(function(d) {
     const layer = select(this)
 

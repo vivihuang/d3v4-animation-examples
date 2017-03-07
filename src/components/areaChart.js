@@ -10,9 +10,7 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawMultipleAreaChart = (svg, xScale, yScale, color) => {
-  const symbols = svg.selectAll('.symbol')
-
+export const drawMultipleAreaChart = (symbols, xScale, yScale, color) => {
   symbols.each(function(d) {
     const currentArea = area()
       .x(d => xScale(d.date))

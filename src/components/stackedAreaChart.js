@@ -11,7 +11,7 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawStackedAreaChart = (svg, xScale, yScale, color, width, height, originData, entryData) => {
+export const drawStackedAreaChart = (symbols, xScale, yScale, color, width, height, originData, entryData) => {
   const keys = originData.map(d => d.key)
 
   const currentStack = stack()
@@ -34,10 +34,9 @@ export const drawStackedAreaChart = (svg, xScale, yScale, color, width, height, 
     .y(d => yScale(d[0]))
     .curve(curveCatmullRom.alpha(0.5))
 
-  const symbols = svg.selectAll('.symbol')
-    .data(stackedData)
+  symbols.data(stackedData)
 
-  symbols.each(function(d, i) {
+  symbols.each(function(d) {
     const layer = select(this)
 
     layer.transition(easeTransition())
@@ -50,7 +49,7 @@ export const drawStackedAreaChart = (svg, xScale, yScale, color, width, height, 
     layer.selectAll('.line')
       .transition(easeTransition())
       .attr('d', currentLine(d))
-      .style("opacity", i === stackedData.length - 1 ? 1 : 0)
+      .style("opacity", 0)
 
     const legendY = (yScale(d[d.length - 1][0]) + yScale(d[d.length - 1][1])) / 2
 

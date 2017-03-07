@@ -10,9 +10,8 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawOverlappingAreaChart = (svg, xScale, yScale, color, width, height, data) => {
-  const symbols = svg.selectAll('.symbol')
-    .data(data)
+export const drawOverlappingAreaChart = (symbols, xScale, yScale, color, width, height, data) => {
+  symbols.data(data)
 
   symbols.each(function(d, i) {
     const currentArea = area()

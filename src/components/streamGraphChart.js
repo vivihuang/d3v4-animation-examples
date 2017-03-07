@@ -11,7 +11,7 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawStreamGraphChart = (svg, xScale, yScale, color, width, height, originData, entryData) => {
+export const drawStreamGraphChart = (symbols, xScale, yScale, color, width, height, originData, entryData) => {
   const keys = originData.map(d => d.key)
 
   const currentStack = stack()
@@ -35,8 +35,7 @@ export const drawStreamGraphChart = (svg, xScale, yScale, color, width, height, 
     .y(d => yScale(d[0]))
     .curve(curveCatmullRom.alpha(0.5))
 
-  const symbols = svg.selectAll('.symbol')
-    .data(stackedData)
+  symbols.data(stackedData)
 
   symbols.each(function(d, i) {
     const layer = select(this)
