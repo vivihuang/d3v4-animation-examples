@@ -11,7 +11,7 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-const hideAllShapes = (layer, xScale, yScale, width, data) => {
+const hideAllShapes = (layer, xScale, yScale, data) => {
   const currentLine = line()
     .x(d => xScale(d.date))
     .y(d => yScale(d.price))
@@ -23,9 +23,12 @@ const hideAllShapes = (layer, xScale, yScale, width, data) => {
     .style('opacity', 0)
     .remove()
 
+  const n = data.values.length
+  const positionX = xScale(data.values[n - 1].date) + 20
+
   layer.selectAll('.legend')
     .transition(easeTransition(0))
-    .attr('transform', `translate(${width - 30}, ${yScale(0)})`)
+    .attr('transform', `translate(${positionX}, ${yScale(0)})`)
     .attr('dy', '0')
 
   layer.selectAll('.line')
@@ -60,7 +63,7 @@ const drawLineChart = (symbols, xScale, yScale, k) => {
   })
 }
 
-export const drawMultipleLineChart = (symbols, xScale, yScale, color, width, height, data) => {
+export const drawMultipleLineChart = (symbols, xScale, yScale, color) => {
   symbols.each(function(d) {
     const layer = select(this)
 
@@ -86,7 +89,7 @@ export const drawMultipleLineChart = (symbols, xScale, yScale, color, width, hei
       if ((k += 2) >= n) {
         drawLineChart(symbols, xScale, yScale, n)
         window.setTimeout(() => {
-          hideAllShapes(layer, xScale, yScale, width, d)
+          hideAllShapes(layer, xScale, yScale, d)
         }, 500)
         t.stop()
       }

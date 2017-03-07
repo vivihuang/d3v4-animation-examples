@@ -10,7 +10,7 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawOverlappingAreaChart = (symbols, xScale, yScale, color, width, height, data) => {
+export const drawOverlappingAreaChart = (symbols, xScale, yScale, color, height, data) => {
   symbols.data(data)
 
   symbols.each(function(d, i) {
@@ -41,10 +41,12 @@ export const drawOverlappingAreaChart = (symbols, xScale, yScale, color, width, 
       .style('opacity', 1)
 
     const n = d.values.length
+    const legendX = xScale(d.values[n - 1].date) + 20
+    const legendY = yScale(d.values[n - 1].price)
 
     layer.selectAll('.legend')
       .transition(easeTransition(0))
-      .attr('transform', `translate(${width - 30}, ${yScale(d.values[n - 1].price)})`)
+      .attr('transform', `translate(${legendX}, ${legendY})`)
       .attr('dy', '1rem')
   })
 }

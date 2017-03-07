@@ -11,7 +11,7 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawStackedAreaChart = (symbols, xScale, yScale, color, width, height, originData, entryData) => {
+export const drawStackedAreaChart = (symbols, xScale, yScale, color, height, originData, entryData) => {
   const keys = originData.map(d => d.key)
 
   const currentStack = stack()
@@ -51,11 +51,12 @@ export const drawStackedAreaChart = (symbols, xScale, yScale, color, width, heig
       .attr('d', currentLine(d))
       .style("opacity", 0)
 
+    const legendX = xScale(d[d.length - 1].data.date) + 20
     const legendY = (yScale(d[d.length - 1][0]) + yScale(d[d.length - 1][1])) / 2
 
     layer.selectAll('.legend')
       .transition(easeTransition())
-      .attr('transform', `translate(${width - 30}, ${legendY})`)
+      .attr('transform', `translate(${legendX}, ${legendY})`)
       .attr('dy', '0.3rem')
   })
 }

@@ -76,10 +76,7 @@ const xScale = scaleTime()
 const yScale = scaleLinear().range([height, 0]).domain([0, 0])
 
 const currentLine = line()
-  .x(d => {
-    console.log(d)
-    return xScale(d.date)
-  })
+  .x(d => xScale(d.date))
   .y(height)
   .curve(curveCatmullRom.alpha(0.5))
 
@@ -132,19 +129,19 @@ const hideReferenceLine = () => {
     .style('opacity', 0)
 }
 
-drawMultipleLineChart(symbols, xScale, yScale, color, width, height, data)
+drawMultipleLineChart(symbols, xScale, yScale, color)
 window.setTimeout(() => {
   drawMultipleAreaChart(symbols, xScale, yScale, color)
 }, 2500)
 window.setTimeout(() => {
   showReferenceLine()
-  drawStackedAreaChart(symbols, xScale, yScale, color, width, height, data, stackedData)
+  drawStackedAreaChart(symbols, xScale, yScale, color, height, data, stackedData)
 }, 3000)
 window.setTimeout(() => {
   hideReferenceLine()
-  drawStreamGraphChart(symbols, xScale, yScale, color, width, height, data, stackedData)
+  drawStreamGraphChart(symbols, xScale, yScale, color, height, data, stackedData)
 }, 4000)
 window.setTimeout(() => {
   showReferenceLine()
-  drawOverlappingAreaChart(symbols, xScale, yScale, color, width, height, data)
+  drawOverlappingAreaChart(symbols, xScale, yScale, color, height, data)
 }, 5000)
