@@ -46,6 +46,6 @@ export const drawOverlappingAreaChart = (svg, xScale, yScale, color, width, heig
     layer.selectAll('.legend')
       .transition(easeTransition(0))
       .attr('transform', `translate(${width - 30}, ${yScale(d.values[n - 1].price)})`)
-      .attr('dy', '0.3rem')
+      .attr('dy', '1rem')
   })
 }

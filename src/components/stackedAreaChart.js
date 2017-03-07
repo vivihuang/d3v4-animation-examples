@@ -11,9 +11,8 @@ const easeTransition = (delayTime = 200, durationTime = 500) => {
     .ease(easeSinInOut)
 }
 
-export const drawStackedAreaChart = (svg, xScale, yScale, color, width, height, entryData) => {
-  const keys = Object.keys(entryData[0]).filter(item => item !== 'date')
-    .sort((a, b) => a.toLowerCase() < b.toLowerCase())
+export const drawStackedAreaChart = (svg, xScale, yScale, color, width, height, originData, entryData) => {
+  const keys = originData.map(d => d.key)
 
   const currentStack = stack()
     .keys(keys)

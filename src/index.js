@@ -62,7 +62,7 @@ data.map(d => Object.assign(d, {
   sumPrice: sum(d.values, v => v.price),
 }))
 
-data.sort((a, b) => a.key.toLowerCase() < b.key.toLowerCase())
+data.sort((a, b) => a.maxPrice < b.maxPrice)
 
 const xScale = scaleTime()
   .range([0, width - 50])
@@ -78,10 +78,10 @@ window.setTimeout(() => {
   drawMultipleAreaChart(svg, xScale, yScale, color)
 }, 2500)
 window.setTimeout(() => {
-  drawStackedAreaChart(svg, xScale, yScale, color, width, height, stackedData)
+  drawStackedAreaChart(svg, xScale, yScale, color, width, height, data, stackedData)
 }, 3000)
 window.setTimeout(() => {
-  drawStreamGraphChart(svg, xScale, yScale, color, width, height, stackedData)
+  drawStreamGraphChart(svg, xScale, yScale, color, width, height, data, stackedData)
 }, 4000)
 window.setTimeout(() => {
   drawOverlappingAreaChart(svg, xScale, yScale, color, width, height, data)
