@@ -3,7 +3,7 @@ import { select } from 'd3-selection'
 import { nest } from 'd3-collection'
 import { timeParse } from 'd3-time-format'
 import { min, max, sum } from 'd3-array'
-import { scaleTime, scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale'
+import { scaleTime, scaleLinear, scaleOrdinal, schemeCategory10, scaleBand } from 'd3-scale'
 import { line, curveCatmullRom } from 'd3-shape'
 import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
@@ -14,6 +14,8 @@ import { drawMultipleAreaChart } from './components/areaChart'
 import { drawStackedAreaChart } from './components/stackedAreaChart'
 import { drawStreamGraphChart } from './components/streamGraphChart'
 import { drawOverlappingAreaChart } from './components/overlappingAreaChart'
+import { drawGroupedBarChart } from './components/groupedBarChart'
+import { drawBarChart } from './components/stackedBarChart'
 
 import './styles.css'
 
@@ -66,7 +68,7 @@ data.map(d => Object.assign(d, {
 
 data.sort((a, b) => a.maxPrice < b.maxPrice)
 
-const xScale = scaleTime()
+let xScale = scaleTime()
   .range([0, width - 50])
   .domain([
     min(data, co => min(co.values, d => d.date)),
@@ -99,9 +101,6 @@ symbols.each(function (d) {
 
   layer.append('path')
     .attr('class', 'area')
-
-  layer.append('path')
-    .attr('class', 'bar')
 
   layer.append('path')
     .attr('class', 'line')
@@ -145,3 +144,20 @@ window.setTimeout(() => {
   showReferenceLine()
   drawOverlappingAreaChart(symbols, xScale, yScale, color, height, data)
 }, 5000)
+window.setTimeout(() => {
+  symbols.selectAll('.line')
+    .transition(easeTransition(0))
+    .style('opacity', 0)
+    .remove()
+  symbols.selectAll('.area')
+    .transition(easeTransition(0))
+    .style('opacity', 0)
+    .remove()
+  xScale = scaleBand()
+    .domain(data[0].values.map(d => d.date))
+    .range([0, width - 50])
+    .paddingInner(0.8)
+    .paddingOuter(0.5)
+  yScale.range([height, 0]).domain([0, max(data, d => d.maxPrice)])
+  drawGroupedBarChart(symbols, xScale, yScale, color, width, height)
+}, 5500)
