@@ -16,6 +16,7 @@ import { drawStreamGraphChart } from './components/streamGraphChart'
 import { drawOverlappingAreaChart } from './components/overlappingAreaChart'
 import { drawGroupedBarChart } from './components/groupedBarChart'
 import { drawStackedBarChart } from './components/stackedBarChart'
+import { drawTransposeBarChart } from './components/transposeBarChart'
 
 import './styles.css'
 
@@ -171,5 +172,5 @@ window.setTimeout(() => {
   const x1Scale = scaleBand()
     .domain(data.map(d => d.key))
     .range([0, xScale.bandwidth()])
-  drawStackedBarChart(symbols, xScale, x1Scale, yScale, color, width, height, data, stackedData)
+  drawStackedBarChart(symbols, xScale, x1Scale, yScale, width, height, data, stackedData)
 }, 6000)

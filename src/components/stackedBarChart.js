@@ -1,17 +1,9 @@
 import { select } from 'd3-selection'
-import { transition } from 'd3-transition'
-import { easeSinInOut } from 'd3-ease'
 import { stack, stackOrderReverse } from 'd3-shape'
 import { max } from 'd3-array'
+import { scaleBand } from 'd3-scale'
 
-const easeTransition = (delayTime = 200, durationTime = 500) => {
-  return transition()
-    .delay(delayTime)
-    .duration(durationTime)
-    .ease(easeSinInOut)
-}
-
-export const drawStackedBarChart = (symbols, xScale, x1Scale, yScale, color, width, height, originData, entryData) => {
+export const drawStackedBarChart = (symbols, xScale, x1Scale, yScale, width, height, originData, entryData) => {
   const keys = originData.map(d => d.key)
 
   const currentStack = stack()
@@ -19,6 +11,12 @@ export const drawStackedBarChart = (symbols, xScale, x1Scale, yScale, color, wid
     .order(stackOrderReverse)
 
   const stackedData = currentStack(entryData)
+
+  const x2Scale = scaleBand()
+    .domain(originData[0].values.map(d => d.date))
+    .range([50, width - 110])
+    .paddingInner(0.1)
+    .paddingOuter(1)
 
   yScale.domain([0, max(stackedData, d => max(d, v => v[1]))])
     .range([height, 0])
@@ -37,16 +35,8 @@ export const drawStackedBarChart = (symbols, xScale, x1Scale, yScale, color, wid
         .attr('width', x1Scale.bandwidth() * 2)
         .attr('height', v => yScale(v[0]) - yScale(v[1]))
         .style('stroke', '#fff')
-
-    window.setTimeout(() => {
-      xScale.range([50, width - 110]).paddingInner(0.2).paddingOuter(1)
-
-      layer.selectAll('.bar')
-        .transition(easeTransition(0))
-        .attr('x', v => xScale(v.data.date))
-        .attr('y', v => yScale(v[1]))
-        .attr('width', xScale.bandwidth())
-        .attr('height', v => yScale(v[0]) - yScale(v[1]))
-    }, d.length * 10)
+        .delay((v, j) => j * 10)
+        .attr('x', v => x2Scale(v.data.date))
+        .attr('width', x2Scale.bandwidth())
   })
 }
