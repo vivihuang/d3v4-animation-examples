@@ -18,6 +18,7 @@ import { drawGroupedBarChart } from './components/groupedBarChart'
 import { drawStackedBarChart } from './components/stackedBarChart'
 import { drawTransposeBarChart } from './components/transposeBarChart'
 import { drawDonutChart } from './components/donutChart'
+import { drawDonutExplodeChart } from './components/donutExplodeChart'
 
 import './styles.css'
 
@@ -193,3 +194,6 @@ window.setTimeout(() => {
   hideReferenceLine()
   drawDonutChart(symbols, xScale, yScale, width, height, color, data)
 }, 9000)
+window.setTimeout(() => {
+  drawDonutExplodeChart(symbols, xScale, yScale, width, height, color, data)
+}, 9500)
