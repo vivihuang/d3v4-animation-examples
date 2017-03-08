@@ -17,6 +17,7 @@ import { drawOverlappingAreaChart } from './components/overlappingAreaChart'
 import { drawGroupedBarChart } from './components/groupedBarChart'
 import { drawStackedBarChart } from './components/stackedBarChart'
 import { drawTransposeBarChart } from './components/transposeBarChart'
+import { drawDonutChart } from './components/donutChart'
 
 import './styles.css'
 
@@ -106,6 +107,9 @@ symbols.each(function (d) {
   layer.append('path')
     .attr('class', 'line')
 
+  layer.append('path')
+    .attr('class', 'arc')
+
   layer.append('text')
     .text(d.key)
     .attr('class', 'legend')
@@ -185,3 +189,7 @@ window.setTimeout(() => {
   symbols.data(data)
   drawTransposeBarChart(symbols, xScale, yScale, width, height)
 }, 7500)
+window.setTimeout(() => {
+  hideReferenceLine()
+  drawDonutChart(symbols, xScale, yScale, width, height, color, data)
+}, 9000)
