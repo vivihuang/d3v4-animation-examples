@@ -4,7 +4,7 @@ import { max } from 'd3-array'
 import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
 
-const easeTransition = (delayTime = 200, durationTime = 500) => {
+const easeTransition = (delayTime = 0, durationTime = 500) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)

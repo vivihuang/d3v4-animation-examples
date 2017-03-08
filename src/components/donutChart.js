@@ -3,7 +3,7 @@ import { arc, pie } from 'd3-shape'
 import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
 
-const easeTransition = (delayTime = 200, durationTime = 500) => {
+const easeTransition = (delayTime = 0, durationTime = 800) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)
@@ -52,7 +52,7 @@ export const drawDonutChart = (symbols, xScale, yScale, width, height, color, da
 
     layer.selectAll('.arc')
       .style('fill', color(data[i].key))
-      .transition(easeTransition(0))
+      .transition(easeTransition())
       .tween('d', () => arcTween(d, layer))
   })
 }

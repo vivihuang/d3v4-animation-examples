@@ -3,7 +3,7 @@ import { select } from 'd3-selection'
 import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
 
-const easeTransition = (delayTime = 200, durationTime = 500) => {
+const easeTransition = (delayTime = 0, durationTime = 500) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)
@@ -31,7 +31,7 @@ export const drawMultipleAreaChart = (symbols, xScale, yScale, color) => {
     currentArea.y1(d => yScale(d.price))
 
     layer.selectAll('.area')
-      .transition(easeTransition(0))
+      .transition(easeTransition())
       .attr('d', currentArea(d.values))
   })
 }

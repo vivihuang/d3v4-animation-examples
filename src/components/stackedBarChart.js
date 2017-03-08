@@ -35,8 +35,15 @@ export const drawStackedBarChart = (symbols, xScale, x1Scale, yScale, width, hei
         .attr('width', x1Scale.bandwidth() * 2)
         .attr('height', v => yScale(v[0]) - yScale(v[1]))
         .style('stroke', '#fff')
-        .delay((v, j) => j * 10)
-        .attr('x', v => x2Scale(v.data.date))
-        .attr('width', x2Scale.bandwidth())
+
+      window.setTimeout(() => {
+        layer.selectAll('.bar')
+          .transition()
+          .delay((v, j) => j * 10)
+          .attr('x', v => x2Scale(v.data.date))
+          .attr('y', v => yScale(v[1]))
+          .attr('width', x2Scale.bandwidth())
+          .attr('height', v => yScale(v[0]) - yScale(v[1]))
+      }, 500)
   })
 }

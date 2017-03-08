@@ -3,7 +3,7 @@ import { select } from 'd3-selection'
 import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
 
-const easeTransition = (delayTime = 200, durationTime = 500) => {
+const easeTransition = (delayTime = 0, durationTime = 500) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)
@@ -31,12 +31,12 @@ export const drawOverlappingAreaChart = (symbols, xScale, yScale, color, height,
       .domain([0, d.maxPrice])
 
     layer.selectAll('.area')
-      .transition(easeTransition(0))
+      .transition(easeTransition())
       .attr('d', currentArea(d.values))
       .style('opacity', 0.5)
 
     layer.selectAll('.line')
-      .transition(easeTransition(0))
+      .transition(easeTransition())
       .attr('d', currentLine(d.values))
       .style('opacity', 1)
 
@@ -45,7 +45,7 @@ export const drawOverlappingAreaChart = (symbols, xScale, yScale, color, height,
     const legendY = yScale(d.values[n - 1].price)
 
     layer.selectAll('.legend')
-      .transition(easeTransition(0))
+      .transition(easeTransition())
       .attr('transform', `translate(${legendX}, ${legendY})`)
       .attr('dy', '1rem')
   })

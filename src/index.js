@@ -137,19 +137,19 @@ const hideReferenceLine = () => {
 drawMultipleLineChart(symbols, xScale, yScale, color)
 window.setTimeout(() => {
   drawMultipleAreaChart(symbols, xScale, yScale, color)
-}, 2500)
+}, 2000)
 window.setTimeout(() => {
   showReferenceLine()
   drawStackedAreaChart(symbols, xScale, yScale, height, data, stackedData)
-}, 3000)
+}, 2700)
 window.setTimeout(() => {
   hideReferenceLine()
   drawStreamGraphChart(symbols, xScale, yScale, color, height, data, stackedData)
-}, 4000)
+}, 3400)
 window.setTimeout(() => {
   showReferenceLine()
   drawOverlappingAreaChart(symbols, xScale, yScale, color, height, data)
-}, 5000)
+}, 4100)
 window.setTimeout(() => {
   symbols.selectAll('.line')
     .transition(easeTransition(0))
@@ -168,7 +168,7 @@ window.setTimeout(() => {
     .range([0, xScale.bandwidth()])
   yScale.range([height, 0]).domain([0, max(data, d => d.maxPrice)])
   drawGroupedBarChart(symbols, xScale, x1Scale, yScale, color, width, height)
-}, 5500)
+}, 4800)
 window.setTimeout(() => {
   xScale = scaleBand()
     .domain(data[0].values.map(d => d.date))
@@ -178,7 +178,7 @@ window.setTimeout(() => {
     .domain(data.map(d => d.key))
     .range([0, xScale.bandwidth()])
   drawStackedBarChart(symbols, xScale, x1Scale, yScale, width, height, data, stackedData)
-}, 6000)
+}, 5500)
 window.setTimeout(() => {
   xScale = scaleBand()
     .domain(data.map(d => d.key))
@@ -189,11 +189,11 @@ window.setTimeout(() => {
     .range([height, 0])
   symbols.data(data)
   drawTransposeBarChart(symbols, xScale, yScale, width, height)
-}, 7500)
+}, 7300)
 window.setTimeout(() => {
   hideReferenceLine()
   drawDonutChart(symbols, xScale, yScale, width, height, color, data)
 }, 9000)
 window.setTimeout(() => {
   drawDonutExplodeChart(symbols, xScale, yScale, width, height, color, data)
-}, 9500)
+}, 10000)

@@ -4,7 +4,7 @@ import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
 import { timer } from 'd3-timer'
 
-const easeTransition = (delayTime = 200, durationTime = 500) => {
+const easeTransition = (delayTime = 0, durationTime = 500) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)
@@ -27,12 +27,12 @@ const hideAllShapes = (layer, xScale, yScale, data) => {
   const positionX = xScale(data.values[n - 1].date) + 20
 
   layer.selectAll('.legend')
-    .transition(easeTransition(0))
+    .transition(easeTransition())
     .attr('transform', `translate(${positionX}, ${yScale(0)})`)
     .attr('dy', '0')
 
   layer.selectAll('.line')
-    .transition(easeTransition(0))
+    .transition(easeTransition())
     .attr('d', currentLine(data.values))
 }
 
@@ -90,7 +90,7 @@ export const drawMultipleLineChart = (symbols, xScale, yScale, color) => {
         drawLineChart(symbols, xScale, yScale, n)
         window.setTimeout(() => {
           hideAllShapes(layer, xScale, yScale, d)
-        }, 500)
+        }, 200)
         t.stop()
       }
     })

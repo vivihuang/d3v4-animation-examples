@@ -4,7 +4,7 @@ import { transition } from 'd3-transition'
 import { easeSinInOut } from 'd3-ease'
 import { interpolate } from 'd3-interpolate'
 
-const easeTransition = (delayTime = 200, durationTime = 500) => {
+const easeTransition = (delayTime = 0, durationTime = 500) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)
