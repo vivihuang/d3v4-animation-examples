@@ -25,7 +25,7 @@ import './styles.css'
 const parseStringToFloat = string =>
 Math.round(parseFloat(string) * 100) / 100
 
-const easeTransition = (delayTime = 200, durationTime = 500) => {
+const easeTransition = (delayTime = 0, durationTime = 500) => {
   return transition()
     .delay(delayTime)
     .duration(durationTime)
@@ -89,7 +89,7 @@ const svg = select('.chart')
   .append('svg')
   .attr('width', width + margin.right + margin.left)
   .attr('height', height + margin.top + margin.bottom)
-  // .call(responsivefy)
+  .call(responsivefy)
   .append('g')
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
@@ -130,8 +130,7 @@ const showReferenceLine = () => {
 }
 
 const hideReferenceLine = () => {
-  svg.selectAll('.reference')
-    .style('opacity', 0)
+  svg.selectAll('.reference').style('opacity', 0)
 }
 
 drawMultipleLineChart(symbols, xScale, yScale, color)
